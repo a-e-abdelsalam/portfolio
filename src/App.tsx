@@ -18,7 +18,8 @@ import {
   Rocket,
   Shield,
   Globe,
-  Compass
+  Compass,
+  Menu
 } from 'lucide-react';
 
 import portfolioData from './data/portfolio.json';
@@ -33,6 +34,7 @@ const getIcon = (name: string, size: number = 16) => {
     case 'Linkedin': return <Linkedin size={size} />;
     case 'Instagram': return <Instagram size={size} />;
     case 'Play': return <Play size={size} />;
+    case 'Menu': return <Menu size={size} />;
     default: return null;
   }
 };
@@ -55,9 +57,9 @@ const PixelWindow = ({ title, isOpen, onClose, children, icon }: WindowProps) =>
           initial={{ scale: 0.9, opacity: 0, y: 10 }}
           animate={{ scale: 1, opacity: 1, y: 0 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="fixed md:absolute inset-4 md:inset-auto md:top-10 md:left-10 md:right-10 md:bottom-10 z-40 flex items-center justify-center pointer-events-none"
+          className="fixed inset-0 md:inset-4 md:absolute md:top-10 md:left-10 md:right-10 md:bottom-10 z-40 flex items-center justify-center p-2 md:p-0 pointer-events-none"
         >
-          <div className="pixel-window-v2 w-full h-full max-w-4xl flex flex-col z-50 pointer-events-auto overflow-hidden">
+          <div className="pixel-window-v2 w-full h-full max-w-4xl flex flex-col z-50 pointer-events-auto overflow-hidden shadow-2xl">
             {/* Screenshot Header Style */}
             <div className="pixel-header-v2">
               <div className="flex items-center gap-3">
@@ -229,6 +231,7 @@ export default function App() {
   });
 
   const [selectedPlanetId, setSelectedPlanetId] = useState<number | null>(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleWindow = (key: keyof typeof activeWindows) => {
     setActiveWindows(prev => ({ 
@@ -236,24 +239,55 @@ export default function App() {
       [key]: !prev[key] 
     }));
     setSelectedPlanetId(null);
+    setIsMenuOpen(false);
   };
 
   return (
     <div className="flex h-screen bg-hero-black text-white relative overflow-hidden select-none galaxy-bg">
       <div className="starfield" />
-      <div className="nebula" />
+      <div className="nebula opacity-50 md:opacity-100" />
+      
+      {/* Mobile Burger Menu Button */}
+      <button 
+        onClick={() => setIsMenuOpen(!isMenuOpen)}
+        className="fixed top-4 left-4 z-[70] w-12 h-12 rocky-border bg-hero-dark md:hidden flex items-center justify-center text-white active:scale-95 transition-transform"
+      >
+        {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+      </button>
+
+      {/* Frame Rocket Decor - Hide on small mobile */}
+      <div className="absolute top-4 right-4 z-50 hidden sm:flex gap-2">
+         <div className="w-10 h-10 rocky-border flex items-center justify-center bg-hero-red text-white">
+            <Rocket size={16} />
+         </div>
+         <div className="w-10 h-10 rocky-border flex items-center justify-center bg-hero-blue text-white">
+            <Globe size={16} />
+         </div>
+      </div>
       
       {/* Pixel Stars from f1g5Ap look */}
-      <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {[...Array(12)].map((_, i) => (
           <div 
             key={`star-${i}`}
-            className="star-pixel animate-pulse"
+            className="star-pixel animate-pulse hidden md:block"
             style={{
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 5}s`,
               opacity: Math.random() * 0.7 + 0.3
+            }}
+          />
+        ))}
+        {[...Array(8)].map((_, i) => (
+          <div 
+            key={`mob-star-${i}`}
+            className="star-pixel animate-pulse md:hidden"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 5}s`,
+              opacity: Math.random() * 0.5 + 0.2
             }}
           />
         ))}
@@ -302,9 +336,9 @@ export default function App() {
           ))}
       </div>
 
-      {/* Sidebar - Integrated with the new aesthetic */}
-      <aside className="w-80 shrink-0 h-full p-4 z-20">
-        <div className="h-full pixel-window-v2 flex flex-col p-6 overflow-hidden">
+      {/* Sidebar - Responsive sliding on mobile */}
+      <aside className={`fixed md:relative inset-y-0 left-0 w-80 shrink-0 h-full p-4 z-[55] transition-transform duration-500 ease-in-out md:translate-x-0 ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="h-full pixel-window-v2 flex flex-col p-6 overflow-hidden bg-black/90 md:bg-transparent">
           <div className="pixel-header-v2 -mx-6 -mt-6 mb-8">
              <div className="px-4 flex items-center gap-2">
                 <Shield size={14} />
@@ -342,8 +376,20 @@ export default function App() {
         </div>
       </aside>
 
-      {/* Main Execution Area */}
-      <main className="flex-1 relative z-10 w-full overflow-hidden flex items-center justify-center">
+      {/* Sidebar Backdrop for Mobile */}
+      <AnimatePresence>
+        {isMenuOpen && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setIsMenuOpen(false)}
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[50] md:hidden"
+          />
+        )}
+      </AnimatePresence>
+
+      <main className="flex-1 relative z-10 w-full overflow-hidden flex items-center justify-center p-2 md:p-0">
          <AnimatePresence>
             {/* BIO WINDOW */}
       <PixelWindow 
@@ -430,16 +476,6 @@ export default function App() {
             {/* Additional windows would follow similar rocky/cosmic theme updates */}
          </AnimatePresence>
       </main>
-
-      {/* Frame Rocket Decor */}
-      <div className="absolute top-4 right-4 z-50 flex gap-2">
-         <div className="w-10 h-10 rocky-border flex items-center justify-center bg-hero-red text-white">
-            <Rocket size={16} />
-         </div>
-         <div className="w-10 h-10 rocky-border flex items-center justify-center bg-hero-blue text-white">
-            <Globe size={16} />
-         </div>
-      </div>
     </div>
   );
 }
