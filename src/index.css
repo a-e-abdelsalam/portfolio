@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-pixel: "Silkscreen", cursive;
+  --font-mono: "VT323", monospace;
+  --color-hero-red: #d946ef;
+  --color-hero-blue: #00e5ff;
+  --color-hero-purple: #7e22ce;
+  --color-hero-black: #020617;
+  --color-hero-dark: #0f172a;
+}
+
+@layer base {
+  body {
+    @apply font-pixel bg-hero-black text-white selection:bg-hero-red overflow-hidden;
+    image-rendering: pixelated;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 12px;
+  background: #000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-hero-red);
+  border: 3px solid #000;
+}
+
+@layer components {
+  .galaxy-bg {
+    background-image: url('https://user-images.githubusercontent.com/placeholder/f1g5Ap.png'), linear-gradient(#050510, #050510);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nebula {
+    @apply fixed inset-0 pointer-events-none z-0;
+    background-image: url('https://user-images.githubusercontent.com/placeholder/f1g5Ap.png');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.6;
+    mix-blend-mode: screen;
+    animation: nebulaDrift 60s ease-in-out infinite alternate;
+  }
+
+  .star-pixel {
+    @apply absolute bg-white;
+    width: 2px;
+    height: 2px;
+    box-shadow: 0 0 6px #fff, 0 0 12px #d946ef;
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+  }
+
+  @keyframes nebulaDrift {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.1) translate(2%, 2%); }
+  }
+
+  /* Screenshot-accurate Pixel Window */
+  .pixel-window-v2 {
+    @apply bg-[#1a1a2e]/80 backdrop-blur-md relative;
+    border: 3px solid #e2e8f0;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+  }
+
+  .pixel-header-v2 {
+    @apply h-10 border-b-2 border-white/20 px-2 flex items-center justify-between;
+    background: linear-gradient(90deg, #7e22ce 0%, #d946ef 100%);
+  }
+
+  /* Irregular clusters */
+  .rocky-edge {
+    @apply absolute bg-[#7e22ce];
+    box-shadow: inset -2px -2px 0 #4c1d95, inset 2px 2px 0 #e879f9;
+  }
+  
+  /* Button Style from f1g5Aq */
+  .pixel-btn-v3 {
+    @apply relative px-8 py-3 bg-[#d067e3] text-[#421d5a] font-bold uppercase text-[12px] tracking-widest transition-all;
+    border: 3px solid #4a1d6e;
+    border-radius: 14px;
+    box-shadow: 
+      inset -4px -4px 0 rgba(0,0,0,0.15),
+      inset 4px 4px 0 rgba(255,255,255,0.4),
+      0 4px 0 #000;
+  }
+
+  .pixel-btn-v3:hover {
+    @apply brightness-110 -translate-y-0.5;
+    box-shadow: 
+      inset -4px -4px 0 rgba(0,0,0,0.15),
+      inset 4px 4px 0 rgba(255,255,255,0.5),
+      0 6px 0 #000;
+  }
+
+  .pixel-btn-v3:active {
+    @apply translate-y-0.5 scale-[0.98];
+    box-shadow: inset 4px 4px 0 rgba(0,0,0,0.2);
+  }
+
+  .pixel-btn-v3.active {
+    @apply bg-white border-[#d946ef] text-[#d946ef];
+    box-shadow: 0 0 20px rgba(217, 70, 239, 0.4);
+  }
+
+
+  .starfield {
+    @apply fixed inset-0 pointer-events-none z-0;
+    background-image: 
+      radial-gradient(1px 1px at 20px 30px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 40px 70px, rgba(217, 70, 239, 0.5), rgba(0,0,0,0)),
+      radial-gradient(2px 2px at 100px 150px, #fff, rgba(0,0,0,0)),
+      radial-gradient(1px 1px at 150px 50px, rgba(126, 34, 206, 0.5), rgba(0,0,0,0));
+    background-repeat: repeat;
+    background-size: 300px 300px;
+    animation: stars 150s linear infinite;
+    opacity: 0.6;
+  }
+
+  .scanline {
+    @apply fixed inset-0 pointer-events-none z-50;
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0) 50%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.2)
+    );
+    background-size: 100% 4px;
+    opacity: 0.1;
+  }
+
+  .dot-pattern {
+    background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .profile-circle {
+    @apply w-28 h-28 mx-auto rounded-full border-4 border-white overflow-hidden relative mb-4;
+    box-shadow: 0 0 25px var(--color-hero-red);
+  }
+
+  .pixel-sidebar {
+    @apply w-72 bg-hero-dark/95 border-r-4 border-white h-screen p-6 flex flex-col z-20 relative;
+    box-shadow: 5px 0 30px rgba(0,0,0,0.5);
+  }
+
+  /* Rocky Clumped Border Texture */
+  .rocky-border {
+    position: relative;
+    border: 4px solid #fff;
+    background: #0a0a12;
+    box-shadow: 
+      -4px -4px 0 #4a4a5a,
+      4px -4px 0 #4a4a5a,
+      -4px 4px 0 #4a4a5a,
+      4px 4px 0 #4a4a5a,
+      -8px 0 0 -2px #2a2a3a,
+      8px 0 0 -2px #2a2a3a,
+      0 -8px 0 -2px #2a2a3a,
+      0 8px 0 -2px #2a2a3a;
+  }
+
+  /* Irregular clusters using pseudo elements */
+  .rocky-border::before {
+    content: '';
+    @apply absolute -top-4 -left-2 w-6 h-4 bg-[#3a3a4a] border-2 border-white z-0;
+    clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  }
+
+  .rocky-border::after {
+    content: '';
+    @apply absolute -bottom-4 -right-2 w-8 h-4 bg-[#4a4a5a] border-2 border-white z-0;
+    clip-path: polygon(0% 0%, 100% 20%, 80% 100%, 20% 100%);
+  }
+
+  /* Drifting Animation for Planets */
+  @keyframes drift {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(15px, -10px) rotate(2deg); }
+    66% { transform: translate(-10px, 15px) rotate(-1deg); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+  }
+
+  .cosmic-drift {
+    animation: drift 20s ease-in-out infinite;
+  }
+
+  /* Planet Floating Animation */
+  .planet-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+
+  .rocket-accent {
+    @apply absolute pointer-events-none;
+    filter: drop-shadow(0 0 10px var(--color-hero-red));
+  }
+}
+
+@keyframes stars {
+  from { background-position: 0 0; }
+  to { background-position: 1000px 1000px; }
+}
+
+@keyframes gradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.image-render-pixel {
+  image-rendering: pixelated;
+}
+
+/* Rocky Sidebar Frame */
+.sidebar-frame {
+  @apply relative;
+}
+
+.sidebar-frame::before {
+  content: '';
+  @apply absolute top-0 right-0 w-2 h-full bg-white/10 z-30;
+  box-shadow: -2px 0 0 #fff, -4px 0 0 #4a4a5a;
+}
