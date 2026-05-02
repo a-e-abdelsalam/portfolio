@@ -19,7 +19,7 @@
     { "id": "contact", "label": "SOS_SIGNAL.WAV", "icon": "Mail" }
   ],
   "planets": [
-    { "id": 1, "title": "LAVA_CORE", "img": "/images/lava.svg", "behance": "https://www.behance.net/ahmedehab118" },
+    { "id": 1, "title": "My First Project", "img": "/images/image.png", "behance": "https://www.behance.net/ahmedehab118" },
     { "id": 2, "title": "FROST_VEIL", "img": "/images/frost.svg", "behance": "https://www.behance.net/ahmedehab118" },
     { "id": 3, "title": "TERRA_NEW", "img": "/images/terra.svg", "behance": "https://www.behance.net/ahmedehab118" },
     { "id": 4, "title": "IRON_GATE", "img": "/images/gold.svg", "behance": "https://www.behance.net/ahmedehab118" },
